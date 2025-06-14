@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from api.common.common_api import router as CommonRouter
 from api.text_api.text_api import router as TextRouter
+from  starlette.middleware.cors import CORSMiddleware
 from midddlewares.TokenVerifyMiddleware  import TokenVerifyMiddleware
 
 app = FastAPI()
@@ -11,4 +12,10 @@ app.include_router(TextRouter, prefix="/api")
 
 # app.add_middleware(TokenVerifyMiddleware)
 
-
+app.add_middleware(
+       CORSMiddleware,
+       allow_origins=["*"],
+       allow_credentials=True,
+       allow_methods=["*"],
+       allow_headers=["*"],
+   )
