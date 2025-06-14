@@ -1,3 +1,5 @@
+import re
+from pydantic import BaseModel
 
-class SensitiveWordCheck():
+class SensitiveWordCheck(BaseModel):
     content:str
