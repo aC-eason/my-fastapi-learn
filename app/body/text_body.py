@@ -1,0 +1,3 @@
+
+class SensitiveWordCheck():
+    content:str
