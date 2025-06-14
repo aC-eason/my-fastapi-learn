@@ -22,7 +22,7 @@ def random_ua():
     return ua
 
 
-def send_request(url:str, headers:dict=None,data:dict= None, method='GET'):
+def send_request(url:str, method='GET', headers=None,data= None):
     if not headers:
         {
             "Content-Type": "application/json",

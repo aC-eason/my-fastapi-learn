@@ -8,7 +8,7 @@ router = APIRouter(tags=["通用api"],prefix="/text", responses={404: {"descript
 
 @router.post("sensitiveWord/check")
 def senesitive_word_check(request:Request,word_bdy:SensitiveWordCheck):
-    has_sensitive_word, sensitive_word = text_service(word_bdy.content)
+    has_sensitive_word, sensitive_word = text_service.check_word(word_bdy.content)
     resp = {
         "status":200,
         "has_sensitive_word":has_sensitive_word,
