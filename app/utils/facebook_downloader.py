@@ -105,6 +105,8 @@ def parse_getsave(url):
     
     # 多个清晰度视频，需要判断较高分辨率视频
     video_infos = result.get("mediaItems", [])
+    hd_video = ""
+    sd_video = ""
     hd_video_urls = [
         video_info
         for video_info in video_infos

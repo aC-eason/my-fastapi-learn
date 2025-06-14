@@ -1,9 +1,12 @@
+from utils.common_utils import is_facebook_video_post
 from utils.facebook_downloader import parse_tools360, parse_getfb, parse_getsave
 
 
 class VideoService:
     def download_facebook_video(self, fb_url):
         ret = {}
+        if not is_facebook_video_post(url=fb_url):
+            return ret
         parse_data = parse_getfb(url=fb_url)
         if not parse_data:
             parse_data = parse_tools360(fb_url)
