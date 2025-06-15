@@ -29,9 +29,9 @@ def instargam_api(ins_id: str):
             if result.get("video_url") and result.get("video_url") != "":
                 ins_url.append(result.get("video_url"))
         else:
-            if result.get("edge_media_to_tagged_user", {}).get("edges"):
+            if result.get("edge_sidecar_to_children", {}).get("edges"):
                 type = 3
-                source = result.get("edge_media_to_tagged_user", {}).get("edges")
+                source = result.get("edge_sidecar_to_children", {}).get("edges")
                 if source:
                     ins_url = [
                         node.get("node", {}).get("display_url") for node in source
