@@ -23,6 +23,7 @@ def instargam_api(ins_id: str):
     status = result.get("status")
     if status and status == "ok":
         is_video = result.get("is_video")
+        result = result.get("data",{}).get("xdt_shortcode_media",{})
         if is_video:
             type = 1
             if result.get("video_url") and result.get("video_url") != "":
