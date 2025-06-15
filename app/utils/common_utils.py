@@ -41,3 +41,16 @@ def is_pinterest_post(url: str) -> bool:
     except Exception as e:
         print(f"Error while checking URL: {e}")
         return False
+
+
+def is_instrrgam_url(url:str):
+    pattern = r"https?://(?:www\.)?instagram\.com/([a-zA-Z]+)/([A-Za-z0-9_-]+)(?:/|\?|$)"
+    match = re.match(pattern, url)
+    
+    if match:
+        primary_route = match.group(1)  # reel 或 p
+        shortcode = match.group(2)      # DKtQ0xVSIgy 或 DKgOfvUhPsY
+        # 验证一级路由是否为 reel 或 p
+        if primary_route in ['reel', 'p']:
+            return primary_route, shortcode
+    return None, None

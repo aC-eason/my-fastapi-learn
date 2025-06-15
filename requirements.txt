@@ -21,3 +21,4 @@ typing_extensions==4.4.0
 urllib3==1.26.14
 uvicorn==0.20.0
 uvloop==0.17.0
+BeautifulSoup4==4.13.4 

@@ -1,5 +1,6 @@
-from utils.common_utils import is_facebook_video_post,is_pinterest_post
+from utils.common_utils import is_facebook_video_post,is_pinterest_post,is_instrrgam_url
 from utils.facebook_downloader import parse_tools360, parse_getfb, parse_getsave
+from utils.instargam_downloader import instargam_api, parse_snapdownload
 from utils.pinterest_downloader import parse_pinterestdownloader,parse_pokopin,parse_thepindown
 
 
@@ -40,6 +41,32 @@ class VideoService:
             ret.update(parse_data)   
         
         return ret
+    
+    def download_instargam_source(self,ins_url:str):
+        source_url = []
+        source_type = 0
+        ins_type,short_code = is_instrrgam_url(ins_url)
+        source_type, source_url= instargam_api(short_code)
+        if not source_url:
+            source_url = parse_snapdownload(ins_url)
+            if  ins_type =="reel":
+                source_type =2
+            else:
+                if len(source_url) >1:
+                    source_type =3
+                elif len(source_url) =1:
+                    source_type =1 
+                else:
+                    source_type =0
+        return {
+            "type": source_type,
+            "source_url":source_url
+        }
+        
+
+
+        
+
         
 
 
