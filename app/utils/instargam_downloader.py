@@ -22,7 +22,7 @@ def instargam_api(ins_id: str):
 
     response = send_request(url=request_url,headers=headers, method="GET")
     if not response or response.status_code != 200:
-        return None
+        return  ins_url, type
     result = json.loads(response.text)
     status = result.get("status")
     if status and status == "ok":
