@@ -37,7 +37,7 @@ def instargam_api(ins_id: str):
                         node.get("node", {}).get("display_url") for node in source
                     ]
 
-    return result, type
+    return ins_url, type
 
 
 def parse_snapdownload(url: str):

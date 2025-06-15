@@ -54,7 +54,7 @@ class VideoService:
         source_url = []
         source_type = 0
         ins_type, short_code = is_instrrgam_url(ins_url)
-        source_type, source_url = instargam_api(ins_id=short_code)
+        source_url,source_type = instargam_api(ins_id=short_code)
         if not source_url:
             source_url = parse_snapdownload(ins_url)
             if ins_type == "reel":
