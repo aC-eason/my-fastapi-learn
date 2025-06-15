@@ -1,6 +1,7 @@
 import re
 import json
 import requests
+from bs4 import BeautifulSoup
 from utils.request_utils import send_request
 from utils.request_utils import random_ua
 # from constent.video_api import VideoAPI
