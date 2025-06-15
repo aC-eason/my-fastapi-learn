@@ -29,15 +29,17 @@ def instargam_api(ins_id: str):
             if result.get("video_url") and result.get("video_url") != "":
                 ins_url.append(result.get("video_url"))
         else:
-            if result.get("display_url") and result.get("display_url") != "":
-                ins_url.append(result.get("display_url"))
-            else:
+            if result.get("edge_media_to_tagged_user", {}).get("edges"):
                 type = 3
                 source = result.get("edge_media_to_tagged_user", {}).get("edges")
                 if source:
                     ins_url = [
                         node.get("node", {}).get("display_url") for node in source
                     ]
+            elif result.get("display_url") and result.get("display_url") != "":
+                ins_url.append(result.get("display_url"))
+                 
+                
 
     return ins_url, type
 
