@@ -26,7 +26,7 @@ def download_pinterest_source(request:Request,web_info:WebsiteInfo):
 
 @router.post("/instagram/download")
 def download_pinterest_source(request:Request,web_info:WebsiteInfo):
-    ins_info = video_service.download_pinterest_source(web_info.url)
+    ins_info = video_service.download_instargam_source(web_info.url)
     resp = {
         "status":200 if ins_info.get("type") != 0 else 404,
         "data":ins_info
