@@ -66,6 +66,8 @@ class VideoService:
                     source_type = 1
                 else:
                     source_type = 0
+        if not source_url:
+                return {"type": 0, "source_url": []}
         return {"type": source_type, "source_url": source_url}
 
 
