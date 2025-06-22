@@ -9,7 +9,7 @@ class LoginService:
     def google_login(self, request: Request, google_user_info , db: Session,invite_code:str= None):
         gmail = google_user_info.get("email", None)
         google_avatar = google_user_info.get("picture", "")
-        log_info = request.state.log_info
+        log_info = request.state_data.log_info
 
         user_info = {
             "user_id": None,
