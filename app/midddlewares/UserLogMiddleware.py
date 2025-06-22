@@ -42,7 +42,7 @@ class UserLogMiddleWare(BaseHTTPMiddleware):
             "user_params": "",  # 记录POST请求的参数
             "prompt": "",
         }
-        request.state_data.log_info = log_info
+        request.state.log_info = log_info
         response = await call_next(request)
         end_time = int(round(time.time() * 1000))  # 结束时间毫秒
         log_info["deal_time"] = end_time - start_time  # 处理时间 毫秒
