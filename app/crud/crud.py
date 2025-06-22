@@ -4,7 +4,7 @@ from model.mysql.user import User
 from sqlalchemy.orm import Session
 from typing import Optional
 from sqlalchemy.exc import SQLAlchemyError
-from utils.log_utils import ap_user_action, format_log_detail
+# from utils.log_utils import ap_user_action, format_log_detail
 from wrapper.db_wrapper import with_db_session
 
 
