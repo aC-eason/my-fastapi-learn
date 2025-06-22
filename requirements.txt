@@ -22,3 +22,6 @@ urllib3==1.26.14
 uvicorn==0.20.0
 uvloop==0.17.0
 BeautifulSoup4==4.13.4 
+google-auth==2.38.0
+sqlalchemy==2.0.37
+PyJWT==2.9.0
