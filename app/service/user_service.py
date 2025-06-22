@@ -15,7 +15,7 @@ class LoginService:
             "user_id": None,
             "user_name": google_user_info.get("name", ""),
             "email": gmail,
-            "avatar": "",
+            "avatar": NO_LOGIN_AVATAR,
             "ip": log_info.get("ip", ""),
             "login_time": log_info.get("request_time", 0),
         }
@@ -27,7 +27,7 @@ class LoginService:
                 db=db,
                 email=gmail,
                 last_login_ip=log_info.get("ip", ""),
-                avatar=google_avatar,
+                avatar=NO_LOGIN_AVATAR,
                 google_avatar=google_avatar,
             )
         else:
@@ -35,7 +35,7 @@ class LoginService:
             new_user = User(
                 email=gmail,
                 user_name=google_user_info.get("name", ""),
-                avatar=google_avatar,
+                avatar=NO_LOGIN_AVATAR,
                 raw_avatar=google_avatar,
                 register_ip=log_info.get("ip", ""),
                 user_type=1,  # google登录用户默认为 1
@@ -47,8 +47,9 @@ class LoginService:
             user = user_dao.create_user(db=db, new_user=new_user)
 
         # token 解析出用户信息 存放到redis中
-        user_info["avatar"] =  NO_LOGIN_AVATAR
-        user_info["user_id"] = user.id if user else None
+        # user_info["avatar"] =  NO_LOGIN_AVATAR
+        user_info["user_id"] = user.id if user else ""
+        user_info["email"] = user.email if user else ""
         log_info["user_id"] = user.id if user else None  # 阿里云日志记录为数据库用户id
         request.state.log_info = log_info
         return user_info

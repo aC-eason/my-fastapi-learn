@@ -37,8 +37,9 @@ def google_login(
     user_token = login_form.client_id
     # 缓存token 解析信息
     TOKEN_CACHE.set(user_token, user_info, 60 * 60 * 24 * 7)
-    ret = {"token": user_token}
-    return JSONResponse({"status":200,"data":ret}, status_code=status.HTTP_200_OK)
+    user_info['token'] = user_token
+    # ret = {"token": user_token, "email": user_info.get("email", ""),"logo":user_info.get("avatar", "")}
+    return JSONResponse({"status":200,"data":user_info}, status_code=status.HTTP_200_OK)
 
 
 @router.get("/info")
