@@ -142,7 +142,7 @@ user_dao = UserDAO()
 
 class ShortUrlMappingDAO:
 
-    def create_short_url_mapping(self, mapping):
+    def create_short_url_mapping(self, mapping, db: Session = None):
         try:
             self.db.add(mapping)
             self.db.commit()
