@@ -8,7 +8,7 @@ from utils.md5_utils import md5
 
 class RedisCache(Redis):
     # 配置key的模板，线条:项目:版本:作用（比如 generate_result、credit）:域（比如 用户ID）
-    __key_prefix = "maya:visit_info:{}:" 
+    __key_prefix = "kithubs:visit_info:{}:" 
     # 默认过期时间（默认1小时）
     __expire_time = 3600
 

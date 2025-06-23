@@ -5,6 +5,13 @@ from google.oauth2 import id_token
 from config.config import GOOGLE_CLIENT_ID
 from google.auth.transport.requests import Request
 from model.pydantic_model.user_info import UserInfo
+import random
+import string
+
+def generate_short_code(length=6):
+    """生成6位随机短链code，仅包含大小写字母和数字"""
+    characters = string.ascii_letters + string.digits  # a-z, A-Z, 0-9
+    return ''.join(random.choice(characters) for _ in range(length))
 
 
 

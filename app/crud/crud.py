@@ -4,8 +4,10 @@ from model.mysql.user import User
 from sqlalchemy.orm import Session
 from typing import Optional
 from sqlalchemy.exc import SQLAlchemyError
+
 # from utils.log_utils import ap_user_action, format_log_detail
 from wrapper.db_wrapper import with_db_session
+from model.mysql.short_url_mapping import ShortUrlMap
 
 
 class UserDAO:
@@ -136,3 +138,33 @@ class UserDAO:
 
 
 user_dao = UserDAO()
+
+
+class ShortUrlMappingDAO:
+
+    def create_short_url_mapping(self, mapping):
+        try:
+            self.db.add(mapping)
+            self.db.commit()
+            self.db.refresh(mapping)
+            return mapping
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            # log_detail = format_log_detail(
+            #     detail="create short url mapping error", type="Datebase Error"
+            # )
+            # ap_user_action.error(log_detail)
+            return None
+
+    @with_db_session
+    def get_short_url_mapping(self, db: Session = None, **kwargs):
+        try:
+            return db.query(ShortUrlMap).filter_by(**kwargs).all()
+        except SQLAlchemyError as e:
+            # log_detail = format_log_detail(
+            #     detail="get short url mapping error", type="Datebase Error"
+            # )
+            # ap_user_action.error(log_detail)
+            return None
+
+short_url_mapping_dao = ShortUrlMappingDAO()
