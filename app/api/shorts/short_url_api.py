@@ -47,9 +47,10 @@ def create_short_url(request: Request, website: ShortUrlBody, db: Session = Depe
 
 @router.get("/{short_code}")
 def redirect_to_original_url(short_code: str = Path(..., min_length=1)):
-    origin_url = short_url_service.get_url_info(short_code)
-    if not origin_url:
-        origin_url = "https://kithubs.com/short-url"
+    origin_url = "https://kithubs.com/short-url"
+    cache_info  = short_url_service.get_url_info(short_code)
+    if cache_info:
+        origin_url = cache_info.get("original_url", origin_url)
     return RedirectResponse(url=origin_url)
 
     
