@@ -15,7 +15,7 @@ class ShortUrlService:
         "user_id": 0,
     }
 
-    def get_short_code(db: Session = None):
+    def get_short_code(self,db: Session = None):
         """
         生成短链接code
         :param db: 数据库会话
@@ -41,7 +41,7 @@ class ShortUrlService:
         :param is_tracked: 是否追踪，默认为False
         :return: 短链接的code
         """
-        short_code = self.get_short_code(db=db)
+        short_code = self.get_short_code(db)
         short_url_info = ShortUrlMap(
             user_id=user_id,
             short_code=short_code,
