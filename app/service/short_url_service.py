@@ -4,7 +4,7 @@ from model.mysql.short_url_mapping import ShortUrlMap
 from crud.crud import short_url_mapping_dao
 from utils.common_utils import generate_short_code
 from wrapper.db_wrapper import with_db_session
-from common.cache import ShortUrlCache
+from common.cache import SHORT_URL_CACHE
 
 
 class ShortUrlService:
@@ -59,7 +59,7 @@ class ShortUrlService:
             cache_info["is_tracked"] = is_tracked
             cache_info["user_id"] = user_id
             cache_info["id"] = shots.id
-            ShortUrlCache.set(short_code, cache_info)
+            SHORT_URL_CACHE.set(short_code, cache_info)
             return short_code
         return None
 
@@ -70,7 +70,7 @@ class ShortUrlService:
         :param db: 数据库会话
         :return: 短链接信息
         """
-        cache_info = ShortUrlCache.get(short_code)
+        cache_info = SHORT_URL_CACHE.get(short_code)
         if not cache_info:
             short_info = short_url_mapping_dao.get_short_url_mapping(short_code=short_code)
             if not short_info:
@@ -81,7 +81,7 @@ class ShortUrlService:
             cache_info["is_tracked"] = short_info.is_tracked
             cache_info["user_id"] = short_info.user_id
             cache_info["id"] = short_info.id
-            ShortUrlCache.set(short_code, cache_info)
+            SHORT_URL_CACHE.set(short_code, cache_info)
 
         origin_url= cache_info.get("original_url")
         is_tracked = cache_info.get("is_tracked", False)
