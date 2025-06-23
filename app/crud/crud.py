@@ -144,12 +144,12 @@ class ShortUrlMappingDAO:
 
     def create_short_url_mapping(self, mapping, db: Session = None):
         try:
-            self.db.add(mapping)
-            self.db.commit()
-            self.db.refresh(mapping)
+            db.add(mapping)
+            db.commit()
+            db.refresh(mapping)
             return mapping
         except SQLAlchemyError as e:
-            self.db.rollback()
+            db.rollback()
             # log_detail = format_log_detail(
             #     detail="create short url mapping error", type="Datebase Error"
             # )
