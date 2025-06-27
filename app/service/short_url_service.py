@@ -99,6 +99,8 @@ class ShortUrlService:
             short_info = short_url_mapping_dao.get_short_url_mapping(short_code=short_code)
             if not short_info:
                 return None
+            # 如果缓存中没有短链接信息，则从数据库获取并缓存
+            short_info = short_info[0]
             cache_info = deepcopy(self.SHORT_CACHE_TEMPLATE)
             cache_info["original_url"] = short_info.original_url
             cache_info["short_code"] = short_info.short_code
