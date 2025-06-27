@@ -69,3 +69,40 @@ class Redis:
     def build_key(self, key):
         assert isinstance(key, str), '设置 redis 的 key 非字符串'
         return '{}{}'.format(self.key_prefix, key)
+    
+
+
+
+class RedisQueue():
+        __key_prefix = "kithubs:queue:{}:" 
+
+        queue_name = None
+
+        def __init__(self, queue_name:str, expire_time=-1):
+            self.queue_name =self.__key_prefix + queue_name
+            self.config = redis_config
+            self.redis_client = redis.Redis(
+                host=self.config.HOST, port=self.config.PORT, db=self.config.DB, password=self.config.PASSWORD,
+                encoding="utf-8", decode_responses=True)
+            
+            self.expire_time = expire_time
+
+        def enqueue(self, item):
+            """Add an item to the queue (FIFO)."""
+            return self.redis_client.lpush(self.queue_name, json.dumps(item))
+
+        def dequeue(self, timeout=0):
+            """Remove and return an item from the queue. Blocks if timeout > 0."""
+            item = self.redis_client.brpop(self.queue_name, timeout=timeout)
+            if item:
+                # item is a tuple (queue_name, data)
+                return json.loads(item[1])
+            return None
+        
+        def size(self):
+            """Return the number of items in the queue."""
+            return self.redis.llen(self.queue_name)
+
+        def clear(self):
+            """Clear the queue."""
+            return self.redis.delete(self.queue_name)

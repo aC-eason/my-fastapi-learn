@@ -15,11 +15,36 @@ from common.cache import TOKEN_CACHE
 from fastapi.responses import RedirectResponse
 
 router = APIRouter(
-    prefix="/shorts", tags=["用户登录"], responses={404: {"description": "Not found"}}
+    prefix="", tags=["用户登录"], responses={404: {"description": "Not found"}}
 )
 
 
-@router.post("/create")
+@router.post("/shorts")
+def get_short_url_list(request: Request, db: Session = Depends(get_db)):
+    is_login, user_id = check_login(request)
+    resp = {
+        "status": 200,
+        "message": "",
+        "shorts": []
+    }
+    if not is_login:
+        resp["status"] = 401
+        resp["message"] = "need login"
+        return JSONResponse(content=resp)
+
+    shorts = short_url_service.get_short_url_list(user_id)
+    if not shorts:
+        resp["status"] = 404
+        resp["message"] = "no short urls found"
+        return JSONResponse(content=resp)
+
+    resp["shorts"] = shorts
+    return JSONResponse(content=resp)
+
+
+
+
+@router.post("/shorts/create")
 def create_short_url(request: Request, website: ShortUrlBody, db: Session = Depends(get_db)):
     is_login, user_id = check_login(request)
     resp = {
@@ -45,7 +70,7 @@ def create_short_url(request: Request, website: ShortUrlBody, db: Session = Depe
     return JSONResponse(content=resp)
 
 
-@router.get("/{short_code}")
+@router.get("/shorts/{short_code}")
 def redirect_to_original_url(short_code: str = Path(..., min_length=1)):
     origin_url = short_url_service.get_url_info(short_code)
     if not origin_url:

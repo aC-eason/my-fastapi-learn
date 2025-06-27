@@ -62,6 +62,30 @@ class ShortUrlService:
             SHORT_URL_CACHE.set(short_code, cache_info)
             return short_code
         return None
+    
+    def get_short_url_list(self, user_id, db: Session = None):
+        """
+        获取用户的短链接列表
+        :param user_id: 用户ID
+        :param db: 数据库会话
+        :return: 短链接列表
+        """
+        short_urls = short_url_mapping_dao.get_short_url_mapping(user_id=user_id, db=db)
+        if not short_urls:
+            return []
+
+        short_list = []
+        for short in short_urls:
+            cache_info = deepcopy(self.SHORT_CACHE_TEMPLATE)
+            cache_info["original_url"] = short.original_url
+            cache_info["short_code"] = short.short_code
+            cache_info["is_tracked"] = short.is_tracked
+            cache_info["user_id"] = short.user_id
+            cache_info["id"] = short.id
+            SHORT_URL_CACHE.set(short.short_code, cache_info)
+            short_list.append(cache_info)
+
+        return short_list
 
     def get_url_info(self, short_code):
         """

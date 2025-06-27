@@ -157,9 +157,9 @@ class ShortUrlMappingDAO:
             return None
 
     @with_db_session
-    def get_short_url_mapping(self, db: Session = None, **kwargs):
+    def get_short_url_mapping(self, db: Session = None,limit:int= 10, **kwargs):
         try:
-            return db.query(ShortUrlMap).filter_by(**kwargs).all()
+            return db.query(ShortUrlMap).filter_by(**kwargs).limit(10).all()
         except SQLAlchemyError as e:
             # log_detail = format_log_detail(
             #     detail="get short url mapping error", type="Datebase Error"
