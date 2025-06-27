@@ -118,7 +118,7 @@ class ShortUrlService:
                 "id": cache_info.get("id"),
                 "short_code": short_code,
                 "user_id": cache_info.get("user_id"),
-                "ip":request.state.log_info.get("user_id", 0)
+                "ip":request.state.log_info.get("ip", "")
             }
             VISIT_SHORT_URL_CACHE.enqueue(visit_info)
 

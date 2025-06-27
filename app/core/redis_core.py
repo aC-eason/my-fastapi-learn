@@ -79,7 +79,7 @@ class RedisQueue():
         queue_name = None
 
         def __init__(self, queue_name:str, expire_time=-1):
-            self.queue_name =self.__key_prefix + queue_name
+            self.queue_name =self.__key_prefix.format(queue_name)
             self.config = redis_config
             self.redis_client = redis.Redis(
                 host=self.config.HOST, port=self.config.PORT, db=self.config.DB, password=self.config.PASSWORD,
