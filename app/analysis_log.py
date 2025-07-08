@@ -1,35 +1,20 @@
 import time
 from common.cache import VISIT_SHORT_URL_CACHE
-from utils.mongodb_utils import MongoDBClient
+from wrapper.db_wrapper import with_mongo_db_client
 
 
-mongo_client = MongoDBClient()
-
-def get_short_url_visit_info(current_time):
-    visit_detail = {}
-
-    while True:
-        cisit_info = VISIT_SHORT_URL_CACHE.dequeue()
-        if cisit_info is None:
-            break
-
-        short_code = cisit_info["short_code"]
-        request_time = cisit_info["time"]
-        if request_time >= current_time:
-            break
-        if not visit_detail.get(short_code):
-            visit_detail[short_code] = 1
-        else:
-            visit_detail[short_code] += 1
-
-
-def work():
+@with_mongo_db_client
+def work(mongo_client=None):
     visit_info =[]
     while True:
+        print("进入循环")
         cisit_info = VISIT_SHORT_URL_CACHE.dequeue()
         if cisit_info is None:
+            print("队列暂无数据")
+            mongo_client.insert_many_visit_info(visit_info)
             time.sleep(5 * 60)
             continue
+        print("取出数据:",cisit_info)
         visit_info.append(cisit_info)
         if len(visit_info) >= 50:
             mongo_client.insert_many_visit_info(visit_info)
