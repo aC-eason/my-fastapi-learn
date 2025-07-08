@@ -15,6 +15,16 @@ class MysqlConfig:
     port = 3306
 
 
+class MongoDBConfig:
+    inner = "10.4.4.10"
+    db = "kithubs"
+    username = "admin"
+    password = "mongo_kithubs"
+    port = 27017
+    db_name='visit_short_url'
+
+
+
 NO_LOGIN_AVATAR= "https://kithubs.com/no_login.png"
 
 GOOGLE_CLIENT_ID = "519092715425-725koi7qiqephplo3ur4cd9cu656j145.apps.googleusercontent.com"

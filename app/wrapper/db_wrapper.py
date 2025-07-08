@@ -1,6 +1,8 @@
 from functools import wraps
 from sqlalchemy.orm import Session
 from utils.db_utils import SessionLocal
+from utils.mongodb_utils import MongoDBClient
+
 
 def with_db_session(func):
     """
@@ -25,4 +27,17 @@ def with_db_session(func):
             if create_session:
                 db.close()
 
+    return wrapper
+
+
+def with_mongo_db_client(func):
+    @wraps
+    def wrapper(*args, **kwargs):
+        mongo_client = MongoDBClient()
+        try:
+            kwargs["mongo_client"] = mongo_client
+            return func(*args, **kwargs)
+        finally:
+            mongo_client.close()
+    
     return wrapper

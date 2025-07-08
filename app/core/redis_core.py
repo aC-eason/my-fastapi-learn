@@ -74,7 +74,7 @@ class Redis:
 
 
 class RedisQueue():
-        __key_prefix = "kithubs:queue:{}:" 
+        __key_prefix = "kithubs:queue:{}" 
 
         queue_name = None
 
