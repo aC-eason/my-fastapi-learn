@@ -120,7 +120,7 @@ class MongoDBClient:
                 raise
 
     def aggregate(
-        self, collection_name: str, pipeline: List[Dict], username: str
+        self, collection_name: str, pipeline: List[Dict] 
     ) -> List[Dict]:
         """执行聚合查询"""
         with self.get_collection(collection_name) as collection:
@@ -137,7 +137,7 @@ class MongoDBClient:
                 raise
 
     def insert_one(
-        self, collection_name: str, document: Dict[str, Any], username: str
+        self, collection_name: str, document: Dict[str, Any] 
     ) -> str:
         """插入单个文档，返回插入的 ID"""
 
@@ -150,7 +150,7 @@ class MongoDBClient:
                 raise
 
     def insert_many(
-        self, collection_name: str, documents: List[Dict[str, Any]], username: str
+        self, collection_name: str, documents: List[Dict[str, Any]]
     ) -> List[str]:
         """批量插入多个文档，返回插入的 ID 列表"""
 
@@ -209,7 +209,7 @@ class MongoDBClient:
                 raise
 
     def delete_one(
-        self, collection_name: str, query: Dict[str, Any], username: str
+        self, collection_name: str, query: Dict[str, Any] 
     ) -> int:
         """删除单个文档，返回删除的文档数"""
 
@@ -222,7 +222,7 @@ class MongoDBClient:
                 raise
 
     def delete_many(
-        self, collection_name: str, query: Dict[str, Any], username: str
+        self, collection_name: str, query: Dict[str, Any] 
     ) -> int:
         """批量删除多个文档，返回删除的文档数"""
 
