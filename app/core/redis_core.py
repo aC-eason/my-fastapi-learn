@@ -89,11 +89,11 @@ class RedisQueue():
 
         def enqueue(self, item):
             """Add an item to the queue (FIFO)."""
-            return self.redis_client.lpush(self.queue_name, json.dumps(item))
+            return self.redis_client.rpush(self.queue_name, json.dumps(item))
 
         def dequeue(self, timeout=0):
             """Remove and return an item from the queue. Blocks if timeout > 0."""
-            item = self.redis_client.brpop(self.queue_name, timeout=timeout)
+            item = self.redis_client.blpop(self.queue_name, timeout=timeout)
             if item:
                 # item is a tuple (queue_name, data)
                 return json.loads(item[1])

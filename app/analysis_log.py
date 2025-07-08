@@ -14,7 +14,8 @@ def work(mongo_client=None):
         cisit_info = VISIT_SHORT_URL_CACHE.dequeue(timeout=5)
         if cisit_info is None:
             print("队列暂无数据")
-            mongo_client.insert_many_visit_info(visit_info)
+            if visit_info:
+                mongo_client.insert_many_visit_info(visit_info)
             time.sleep(5 * 60)
             continue
         print("取出数据:",cisit_info)
