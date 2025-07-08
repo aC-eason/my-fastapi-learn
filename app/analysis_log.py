@@ -1,6 +1,9 @@
 import time
 from common.cache import VISIT_SHORT_URL_CACHE
+# from utils.mongodb_utils import MongoDBClient
 from wrapper.db_wrapper import with_mongo_db_client
+
+# mongo_client = MongoDBClient()
 
 
 @with_mongo_db_client

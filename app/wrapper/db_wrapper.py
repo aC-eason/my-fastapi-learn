@@ -33,9 +33,11 @@ def with_db_session(func):
 def with_mongo_db_client(func):
     @wraps
     def wrapper(*args, **kwargs):
-        mongo_client = MongoDBClient()
-        try:
+        mongo_client = kwargs.get("mongo_client", None)
+        if not mongo_client:
+            mongo_client = MongoDBClient()
             kwargs["mongo_client"] = mongo_client
+        try:
             return func(*args, **kwargs)
         finally:
             mongo_client.close()
