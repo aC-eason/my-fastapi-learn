@@ -1,6 +1,6 @@
-import time, json
+import time, json, io
 from fastapi import Request
-from starlette.responses import Response,StreamingResponse
+from starlette.responses import Response, StreamingResponse
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from utils.log_utils import logger_access
 
@@ -13,12 +13,13 @@ from utils.common_utils import get_client_ip
 
 # 所以，500以下的响应由中间件捕获；500的响应由异常处理器捕获；500以上的请求，不做请求记录
 
+
 async def read_resp_data(response: StreamingResponse):
     if isinstance(response, StreamingResponse):
-        response_body = b''
+        response_body = b""
         async for chunk in response.body_iterator:
             response_body += chunk
-        response_body = response_body.decode('utf-8')
+        response_body = response_body.decode("utf-8")
         response_is_json = True
 
         try:
@@ -27,9 +28,13 @@ async def read_resp_data(response: StreamingResponse):
             response_data = response_body
             response_is_json = False
 
-        modified_body = json.dumps(response_data).encode('utf-8')
-        response = StreamingResponse(io.BytesIO(modified_body), status_code=response.status_code, headers=dict(response.headers))
-        response.headers['Content-Length'] = str(len(modified_body))
+        modified_body = json.dumps(response_data).encode("utf-8")
+        response = StreamingResponse(
+            io.BytesIO(modified_body),
+            status_code=response.status_code,
+            headers=dict(response.headers),
+        )
+        response.headers["Content-Length"] = str(len(modified_body))
 
         if response_is_json:
             return response_data, response
@@ -37,7 +42,6 @@ async def read_resp_data(response: StreamingResponse):
             return None, response
     else:
         return None, response
-
 
 
 class UserLogMiddleWare(BaseHTTPMiddleware):
@@ -64,7 +68,7 @@ class UserLogMiddleWare(BaseHTTPMiddleware):
             "status": "",
             "message": "",
             "tips": "",
-            "model":"",  # 记录用户使用模型
+            "model": "",  # 记录用户使用模型
             "user_params": "",  # 记录POST请求的参数
             "prompt": "",
         }
