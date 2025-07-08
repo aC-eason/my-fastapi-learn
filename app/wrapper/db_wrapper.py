@@ -31,7 +31,7 @@ def with_db_session(func):
 
 
 def with_mongo_db_client(func):
-    @wraps
+    @wraps(func)
     def wrapper(*args, **kwargs):
         mongo_client = kwargs.get("mongo_client", None)
         if not mongo_client:
