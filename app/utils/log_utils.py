@@ -4,7 +4,6 @@ from fastapi import Request
 from starlette import status
 from pydantic import BaseModel
 from logging.handlers import RotatingFileHandler
-from utils.common_utils import get_user_type
 
 
 def get_error_log_info(
@@ -17,7 +16,6 @@ def get_error_log_info(
     )  # 处理时间 毫秒
     request.state.log_info["tips"] = tips
     request.state.log_info["message"] = message
-    request.state.log_info["user_type"] = get_user_type(request)
     return request.state.log_info
 
 
