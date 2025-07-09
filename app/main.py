@@ -7,6 +7,7 @@ from api.video_api.video_api import router as VideoRouter
 from api.user.user_api import router as UserRouter
 from api.shorts.short_url_api import router as ShortUrlRouter
 from midddlewares.UserLogMiddleware import UserLogMiddleWare
+from midddlewares.TokenVerifyMiddleware import TokenVerifyMiddleware
 
 app = FastAPI()
 
@@ -17,6 +18,7 @@ app.include_router(UserRouter, prefix="/api")
 app.include_router(ShortUrlRouter, prefix="/api")
 
 app.add_middleware(UserLogMiddleWare)
+app.add_middleware(TokenVerifyMiddleware)
 
 if DEBUG:
     app.add_middleware(

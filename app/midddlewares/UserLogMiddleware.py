@@ -49,7 +49,6 @@ class UserLogMiddleWare(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
-        # fingerpoint = request.headers.get("User-Id", "-")  # 用户指纹ID
         hostname = request.url.hostname  # 请求域名
         user_agent = request.headers.get("user-agent", "-")  # UA标识
         start_time = int(round(time.time() * 1000))  # 开始时间毫秒
@@ -60,17 +59,12 @@ class UserLogMiddleWare(BaseHTTPMiddleware):
             "referer": hostname,
             "ip": req_ip,
             "user_id": 0,
-            # "fingerpoint": fingerpoint,
             "method": request.method,
             "url": request.url.path,
             "request_time": start_time,
             "deal_time": 0,
             "status": "",
             "message": "",
-            "tips": "",
-            "model": "",  # 记录用户使用模型
-            "user_params": "",  # 记录POST请求的参数
-            "prompt": "",
         }
         request.state.log_info = log_info
         response = await call_next(request)

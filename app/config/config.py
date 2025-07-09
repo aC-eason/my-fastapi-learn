@@ -1,4 +1,4 @@
-DEBUG = True
+DEBUG = False
 # 美国Redis连接配置
 class RedisConfig:
     HOST = "10.4.4.10"
