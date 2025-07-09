@@ -1,21 +1,22 @@
 import re
+from datetime import datetime
 from fastapi import HTTPException
 from utils.log_utils import logger_access
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # 定义可疑 User-Agent 的模式
 SUSPICIOUS_PATTERNS = [
-    r"bot",
-    r"crawler",
-    r"spider",
-    r"python-requests",
-    r"curl",
-    r"scrapy",
-    r"wget",
-    r"httpclient",
-    r"java/",
-    r"phantomjs",
-    r"^mozilla/5\.0$",  # 精确匹配 Mozilla/5.0
+    re.compile(r"bot", re.IGNORECASE),
+    re.compile(r"crawler", re.IGNORECASE),
+    re.compile(r"spider", re.IGNORECASE),
+    re.compile(r"python-requests", re.IGNORECASE),
+    re.compile(r"curl", re.IGNORECASE),
+    re.compile(r"scrapy", re.IGNORECASE),
+    re.compile(r"wget", re.IGNORECASE),
+    re.compile(r"httpclient", re.IGNORECASE),
+    re.compile(r"java/", re.IGNORECASE),
+    re.compile(r"phantomjs", re.IGNORECASE),
+    re.compile(r"^mozilla/5\.0$", re.IGNORECASE),  # 精确匹配 Mozilla/5.0
 ]
 
 # 定义 User-Agent 最小长度
@@ -24,6 +25,7 @@ MIN_USER_AGENT_LENGTH = 20  # 正常浏览器的 User-Agent 通常较长
 class TokenVerifyMiddleware(BaseHTTPMiddleware):
     # dispatch 必须实现
     async def dispatch(self, request, call_next):
+        client_host = request.client.host if request.client and request.client.host else "unknown"
         user_agent = request.headers.get("User-Agent", "").strip()
             # 检查是否缺少 User-Agent
         if not user_agent:
@@ -37,8 +39,11 @@ class TokenVerifyMiddleware(BaseHTTPMiddleware):
         
         # 检查是否匹配可疑模式（包括 Mozilla/5.0）
         for pattern in SUSPICIOUS_PATTERNS:
-            if re.search(pattern, user_agent.lower(), re.IGNORECASE):
-                logger_access.warning(f"Blocked request from {request.client.host}: Suspicious User-Agent: {user_agent}")
+            if pattern.search(user_agent.lower()):
+                logger_access.warning(
+                    f"Blocked request from {client_host} at {datetime.utcnow().isoformat()}: "
+                    f"Suspicious User-Agent: {user_agent}, Method: {request.method}, Path: {request.url.path}"
+                )
                 raise HTTPException(status_code=403, detail="Suspicious User-Agent detected")
         
         # 继续处理正常请求
