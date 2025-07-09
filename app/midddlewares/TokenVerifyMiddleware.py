@@ -19,7 +19,7 @@ SUSPICIOUS_PATTERNS = [
 ]
 
 # 定义 User-Agent 最小长度
-MIN_USER_AGENT_LENGTH = 15  # 正常浏览器的 User-Agent 通常较长
+MIN_USER_AGENT_LENGTH = 20  # 正常浏览器的 User-Agent 通常较长
 
 class TokenVerifyMiddleware(BaseHTTPMiddleware):
     # dispatch 必须实现
